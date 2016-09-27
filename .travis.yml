@@ -1,0 +1,19 @@
+sudo: required
+language: node_js
+node_js:
+- '4'
+cache:
+  directories:
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_146a6b7af30b_key -iv $encrypted_146a6b7af30b_iv
+  -in deploy_key.enc -out deploy_key -d
+- gem install jekyll bundler
+install:
+- bundle install
+script:
+- bash ./.deploy.sh
+env:
+  global:
+  - ENCRYPTION_LABEL: 146a6b7af30b
+  - COMMIT_AUTHOR_EMAIL: mars@fusemachines.com
