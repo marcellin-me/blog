@@ -16,7 +16,7 @@ We need to deploy our Emberjs application when:
 
 ```yml
 before_deploy:
-  - ember test -s -f 'Acceptance |'
+  - ember test -f 'Acceptance |'
 deploy:
   skip_cleanup: true
   provider: script
