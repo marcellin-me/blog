@@ -111,4 +111,4 @@ Now you can do this!
 * [Testing](http://nshimiye.com/tutorial-ember-cli-1.13.14/tests/?testId=6c41b476)
 
 
-{% gist mmistakes/6589546 %}
+<!-- {% gist mmistakes/6589546 %} -->

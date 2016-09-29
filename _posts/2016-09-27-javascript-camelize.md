@@ -63,4 +63,4 @@ Now you can do this!
 
 * Turn user input into bot commands: `camelize(userInput) === systemCommand`
 
-{% gist mmistakes/6589546 %}
+<!-- {% gist mmistakes/6589546 %} -->

@@ -92,4 +92,4 @@ Now you can do this!
 ### GitHub resources:
 * [Travis config file](http://nshimiye.com/tutorial-ember-cli-1.13.14/tests/?testId=6c41b476)
 
-{% gist mmistakes/6589546 %}
+<!-- {% gist mmistakes/6589546 %} -->
