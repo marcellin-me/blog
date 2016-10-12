@@ -12,8 +12,8 @@ We have a search box, a text on top of it, and a question mark to provide useful
 The information is shown when the user hover over this **question mark**
 
 ### End Goal
-<iframe width="500" height="300" src="//nshimiye.com/tutorial-ember-cli-1.13.14/#/search" frameborder="0"></iframe>
-
+<iframe width="700" height="100" src="//nshimiye.com/tutorial-ember-cli-1.13.14/#/search"></iframe>
+<!-- frameborder="0" -->
 ### Step by step
 
 * create the acceptance test

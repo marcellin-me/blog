@@ -6,6 +6,7 @@ TARGET_BRANCH="gh-pages"
 
 function doCompile {
   # ./.compile.sh
+  cp -rf deplyment-files/_config.yml .
   jekyll build
   cp -rf _site/* out/
   ls -al out
