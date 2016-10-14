@@ -4,6 +4,10 @@
 
 You write because you want other people to get your point. In my case the **point** = **My way of solving a particular challenge**
 
+### Blogging ideas
+
+I use the project feature in github to track all things I wanna write about.
+
 ### Blog structure
 
 * Description
@@ -11,6 +15,10 @@ You write because you want other people to get your point. In my case the **poin
 * Step by Step
 * Result
 	* One sentence describing how this can help a person who follow the steps provided.
+
+### Frequesncy
+
+I am trying to write a blog post every week.
 
 # Contribution
 

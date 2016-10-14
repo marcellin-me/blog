@@ -26,7 +26,7 @@ mkdir -p .deployment/production
 * Add the custom index file that contains Google analytics script
 
 ```html
-// .deployment/production/index.html
+<!-- .deployment/production/index.html -->
 <script type="text/javascript">
   window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
   ga('create', 'UA-XXXXX-Y', 'auto');
