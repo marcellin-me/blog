@@ -11,7 +11,7 @@ We want to serve an Emberjs application using s3 static site serving capability,
 
 ### End Goal
 
-![Product](images/s3-static-site-config.png)
+![Product](/blog/images/s3-static-site-config.png)
 
 ### Step by step
 

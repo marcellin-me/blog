@@ -13,14 +13,14 @@ We want to deploy an Ember app that uses google analytics tracking script.
 * Disable it during development
 
 ### End Goal
-<iframe width="700" height="150" src="//nshimiye.com/tutorial-ember-cli-1.13.14/#/knowledge/whois" ></iframe>
+<iframe width="700" height="150" src="//fuse-mars.github.io/tutorial-ember-cli-1.13.14/#/knowledge/whois" ></iframe>
 
 ### Step by step
 
 * Create a production deployment folder
 
 ```sh
-mkdir -p .deployment/production 
+mkdir -p .deployment/production
 ```
 
 * Add the custom index file that contains Google analytics script
