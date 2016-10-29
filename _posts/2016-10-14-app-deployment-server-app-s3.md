@@ -11,7 +11,7 @@ We want to serve an Emberjs application using s3 static site serving capability,
 
 ### End Goal
 
-![Product](/images/s3-static-site-config.png)
+![Product](images/s3-static-site-config.png)
 
 ### Step by step
 
@@ -62,8 +62,8 @@ Error Document: index.html
 * Fix the CORS Configuration information
 
 ```xml
-<!-- 
-  required if you serve your assets using the secure s3 protocol 
+<!--
+  required if you serve your assets using the secure s3 protocol
   https://s3.amazonaws.com/<bucket-name>/assets/...
 -->
 <?xml version="1.0" encoding="UTF-8"?>
@@ -84,7 +84,7 @@ Error Document: index.html
 
 locationType: 'auto'
 
-``` 
+```
 
 * Build your application
 
