@@ -28,10 +28,10 @@
 <loc>/blog/404.html</loc>
 </url>
 <url>
-<loc>/blog/tags/</loc>
+<loc>/blog/posts/</loc>
 </url>
 <url>
-<loc>/blog/posts/</loc>
+<loc>/blog/tags/</loc>
 </url>
 <url>
 <loc>/blog/</loc>
@@ -41,13 +41,5 @@
 </url>
 <url>
 <loc>/blog/about/</loc>
-</url>
-<url>
-<loc>/blog/out/404.html</loc>
-<lastmod>2016-10-29T17:50:50-04:00</lastmod>
-</url>
-<url>
-<loc>/blog/out/index.html</loc>
-<lastmod>2016-10-29T17:50:50-04:00</lastmod>
 </url>
 </urlset>
