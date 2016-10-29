@@ -2,9 +2,8 @@ sudo: required
 language: ruby
 rvm:
 - 2.1
-
 before_install:
-- openssl aes-256-cbc -K $encrypted_146a6b7af30b_key -iv $encrypted_146a6b7af30b_iv
+- openssl aes-256-cbc -K $encrypted_2d450156d8ea_key -iv $encrypted_2d450156d8ea_iv
   -in deploy_key.enc -out deploy_key -d
 - gem install jekyll bundler
 install:
@@ -13,5 +12,5 @@ script:
 - bash ./.deploy.sh
 env:
   global:
-  - ENCRYPTION_LABEL: 146a6b7af30b
+  - ENCRYPTION_LABEL: 2d450156d8ea
   - COMMIT_AUTHOR_EMAIL: mars@fusemachines.com
