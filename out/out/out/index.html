@@ -108,10 +108,10 @@
 
 
 <div class="entry-header">
-  <div class="image-credit">Image source: <a href="http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/">dargadgetz</a></div><!-- /.image-credit -->
+  <div class="image-credit">Image source: <a href="https://marcellin.me">marcellin</a></div><!-- /.image-credit -->
   
     <div class="entry-image">
-      <img src="/blog/images/abstract-1.jpg" alt="Latest Posts">
+      <img src="/blog/images/mars-computer-hike.jpg" alt="Latest Posts">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -150,14 +150,10 @@ Reading time ~2 minutes
 </ul>
 
 <h3 id="end-goal">End Goal</h3>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Tasted</span>
-<span class="c1">// Value prop: We drank wine and it is good, we want make a note about it so that we can buy it next time!</span>
 
+<p>A site that helps us track different types of wine that we drink</p>
 
-<span class="c1">// @TODO a site that helps us track different types of wine that we drink</span>
-<span class="c1">// you enter 'name', 'cost', 'rating', and a 'note'</span>
-</code></pre>
-</div>
+<iframe width="700" height="250" src="https://marcellin.me/apps/tasted/"></iframe>
 
 <h3 id="step-by-step">Step by step</h3>
 
@@ -191,143 +187,135 @@ yarn start
 </div>
 
 <ul>
-  <li>
-    <p>Create a form component for entering information</p>
-
-    <ul>
-      <li>Define interfaces for both properties and state</li>
-    </ul>
-  </li>
+  <li>Create a form component for entering information</li>
 </ul>
 
-<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// src/components/tasted-wine-form.tsx</span>
-<span class="k">export</span> <span class="kr">interface</span> <span class="nx">TWPropsInterface</span> <span class="p">{}</span>
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * Define interfaces for both properties and state</span>
+<span class="c1">// src/components/tasted-wine-form.tsx</span>
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">WineInterface</span> <span class="p">{</span>
+    <span class="nl">name</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span> <span class="nl">cost</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span> <span class="nl">rating</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span> <span class="nl">note</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">TWPropsInterface</span> <span class="p">{</span>
+  <span class="nl">saveRecord</span><span class="p">:</span> <span class="p">(</span><span class="nx">wine</span><span class="err">:</span> <span class="nx">WineInterface</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="p">;</span>
+<span class="p">}</span>
 <span class="k">export</span> <span class="kr">interface</span> <span class="nx">TWStateInterface</span> <span class="p">{</span>
-    <span class="nl">value</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="nl">wine</span><span class="p">:</span> <span class="nx">WineInterface</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
 </div>
 
-<ul>
-  <li>Define main class</li>
-</ul>
-
-<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// src/components/tasted-wine-form.tsx</span>
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * Define main class</span>
+<span class="c1">// src/components/tasted-wine-form.tsx</span>
+<span class="c1">// top code omitted ...</span>
 <span class="kr">class</span> <span class="nx">TastedWineForm</span> <span class="k">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">TWPropsInterface</span><span class="p">,</span> <span class="nx">TWStateInterface</span><span class="o">&gt;</span> <span class="p">{</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="na">props</span><span class="p">:</span> <span class="nx">TWPropsInterface</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="s1">''</span> <span class="p">};</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="na">props</span><span class="p">:</span> <span class="nx">TWPropsInterface</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+      <span class="kd">let</span> <span class="na">wine</span><span class="p">:</span> <span class="nx">WineInterface</span> <span class="o">=</span> <span class="nx">EMPTY_RECORD</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">wine</span> <span class="p">};</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">resetForm</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="na">wine</span><span class="p">:</span> <span class="nx">EMPTY_RECORD</span> <span class="p">});</span>
+  <span class="p">}</span>
 
-    <span class="nx">handleChange</span><span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="na">value</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span> <span class="p">});</span>
-    <span class="p">}</span>
+  <span class="nx">handleChange</span><span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+      <span class="kd">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+      <span class="kd">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      <span class="kd">let</span> <span class="nx">wine</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">wine</span><span class="p">;</span>
+      <span class="nx">wine</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">wine</span><span class="p">,</span> <span class="p">{</span> <span class="p">[</span><span class="nx">name</span><span class="p">]:</span> <span class="nx">value</span> <span class="p">});</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">wine</span> <span class="p">});</span>
+  <span class="p">}</span>
 
     <span class="nx">handleSubmit</span><span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FormEvent</span><span class="o">&lt;</span><span class="nx">HTMLFormElement</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">alert</span><span class="p">(</span><span class="s1">'A name was submitted: '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
         <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">saveRecord</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">wine</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">resetForm</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="o">&lt;</span><span class="nx">form</span> <span class="nx">onSubmit</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="p">}</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span>
-                    <span class="na">Name</span><span class="p">:</span>
-                    <span class="o">&lt;</span><span class="nx">input</span> <span class="kd">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="nx">input</span> <span class="kd">type</span><span class="o">=</span><span class="s2">"submit"</span> <span class="nx">value</span><span class="o">=</span><span class="s2">"Submit"</span> <span class="o">/&gt;</span>
+            <span class="p">{</span> <span class="cm">/*
+              @NOTE form content omitted
+              check Github for complete version
+              */</span> <span class="p">}</span>
             <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
 </span>        <span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
+<span class="c1">// bottom code omitted ...</span>
 </code></pre>
 </div>
 
 <ul>
-  <li>
-    <p>Create component to display entered information</p>
-
-    <ul>
-      <li>Define interfaces for properties, state is ignored because we do not use it anywhere</li>
-    </ul>
-  </li>
+  <li>Create component to display entered information</li>
 </ul>
 
-<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// src/components/tasted-wine.tsx</span>
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * Define interfaces for properties, state is ignored because we do not use it anywhere</span>
+<span class="c1">// src/components/tasted-wine.tsx</span>
 <span class="k">export</span> <span class="kr">interface</span> <span class="nx">WPropsInterface</span> <span class="p">{</span>
-  <span class="nl">wine</span><span class="p">:</span> <span class="p">{</span> <span class="nl">name</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">cost</span><span class="err">:</span> <span class="kr">number</span><span class="p">,</span> <span class="nx">rating</span><span class="err">:</span> <span class="kr">number</span><span class="p">,</span> <span class="nx">note</span><span class="err">:</span> <span class="kr">string</span> <span class="p">}</span>
+  <span class="nl">wine</span><span class="p">:</span> <span class="nx">WineInterface</span>
 <span class="p">}</span>
 </code></pre>
 </div>
 
-<ul>
-  <li>Define main class</li>
-</ul>
-
-<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// src/components/tasted-wine.tsx</span>
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * Define main class</span>
+<span class="c1">// src/components/tasted-wine.tsx</span>
 <span class="c1">// @NOTE wine is the domain model</span>
+<span class="c1">// top code omitted ...</span>
 <span class="kr">class</span> <span class="nx">TastedWine</span> <span class="k">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">WPropsInterface</span><span class="p">,</span> <span class="kc">null</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-                    <span class="na">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">wine</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-                    <span class="na">Cost</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">wine</span><span class="p">.</span><span class="nx">cost</span><span class="p">}</span> <span class="o">&lt;</span><span class="sr">/span</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-                    <span class="na">Rating</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">wine</span><span class="p">.</span><span class="nx">rating</span><span class="p">}</span> <span class="o">&lt;</span><span class="sr">/span</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
-</span>                <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-                    <span class="na">Note</span><span class="p">:</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">wine</span><span class="p">.</span><span class="nx">note</span><span class="p">}</span>
-                <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
-</span>            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+            <span class="p">{</span> <span class="cm">/*
+              @NOTE div content omitted
+              check Github for complete version
+              */</span> <span class="p">}</span>
+            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
 </span>        <span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
+<span class="c1">// bottom code omitted ...</span>
 </code></pre>
 </div>
 
 <ul>
-  <li>
-    <p>Modify the app component to include the form and the display components</p>
-
-    <ul>
-      <li>Define interfaces for both properties and state</li>
-    </ul>
-  </li>
+  <li>Modify the app component to include the form and the display components</li>
 </ul>
 
-<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// src/App.tsx</span>
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * Define interfaces for both properties and state</span>
+<span class="c1">// src/App.tsx</span>
 <span class="k">export</span> <span class="kr">interface</span> <span class="nx">APropsInterface</span> <span class="p">{}</span>
 <span class="k">export</span> <span class="kr">interface</span> <span class="nx">AStateInterface</span> <span class="p">{</span>
-  <span class="nl">wineList</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">cost</span><span class="p">:</span> <span class="kr">number</span><span class="p">,</span> <span class="na">rating</span><span class="p">:</span> <span class="kr">number</span><span class="p">,</span> <span class="na">note</span><span class="p">:</span> <span class="kr">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="nl">wineList</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">WineInterface</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
 </div>
 
-<ul>
-  <li>Define main class</li>
-</ul>
-
-<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// src/App.tsx</span>
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * Define main class</span>
+<span class="c1">// src/App.tsx</span>
+<span class="c1">// top code omitted ...</span>
 <span class="kr">class</span> <span class="nx">App</span> <span class="k">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">APropsInterface</span><span class="p">,</span> <span class="nx">AStateInterface</span><span class="o">&gt;</span> <span class="p">{</span>
   <span class="kd">constructor</span><span class="p">(</span><span class="na">props</span><span class="p">:</span> <span class="nx">APropsInterface</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">wineList</span><span class="p">:</span> <span class="p">[]</span> <span class="p">};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">saveRecord</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">saveRecord</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
   <span class="p">}</span>
 
+  <span class="c1">// @NOTE middle code omitted ...</span>
+  <span class="c1">// check Github for complete version</span>
+
   <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">TastedWineList</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">wineList</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">wine</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">TastedWine</span> <span class="nx">wine</span><span class="o">=</span><span class="p">{</span><span class="nx">wine</span><span class="p">}</span> <span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
+    <span class="kd">let</span> <span class="nx">TastedWineList</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">wineList</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">wine</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">TastedWine</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">i</span><span class="p">}</span> <span class="nx">wine</span><span class="o">=</span><span class="p">{</span><span class="nx">wine</span><span class="p">}</span> <span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
 </span>    <span class="k">return</span> <span class="p">(</span>
-      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App"</span> <span class="o">&gt;</span>
         <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"tasted-form"</span><span class="o">&gt;</span>
-          <span class="o">&lt;</span><span class="nx">TastedWineForm</span> <span class="o">/&gt;</span>
-        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+          <span class="o">&lt;</span><span class="nx">TastedWineForm</span> <span class="nx">saveRecord</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">saveRecord</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
 </span>        <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App-intro"</span><span class="o">&gt;</span>
           <span class="p">{</span><span class="nx">TastedWineList</span><span class="p">}</span>
         <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
@@ -335,6 +323,7 @@ yarn start
 </span>    <span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
+<span class="c1">// bottom code omitted ...</span>
 </code></pre>
 </div>
 
@@ -351,10 +340,12 @@ yarn start
 
 <h3 id="resources">Resources:</h3>
 <ul>
-  <li><a href="http://www.definition-of.com/camelize">React</a></li>
-  <li><a href="http://www.definition-of.com/camelize">TypeScript</a></li>
-  <li><a href="http://www.definition-of.com/camelize">create-react-app</a></li>
-  <li><a href="http://www.definition-of.com/camelize">create-react-app-typescript</a></li>
+  <li><a href="https://marcellin.me/apps/tasted/">Tasted Demo</a></li>
+  <li><a href="https://github.com/marcellin-me/tasted">Tasted Github</a></li>
+  <li><a href="https://facebook.github.io/react/">React</a></li>
+  <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+  <li><a href="https://github.com/facebookincubator/create-react-app">create-react-app</a></li>
+  <li><a href="https://github.com/wmonk/create-react-app-typescript">create-react-app-typescript</a></li>
 </ul>
 
 <h3 id="use-cases">use cases</h3>
@@ -885,6 +876,7 @@ Reading time ~1 minute
     
   </ul>
 </div>
+
 
 </div><!-- /#main -->
 

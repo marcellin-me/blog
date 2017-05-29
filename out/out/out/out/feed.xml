@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-05-28T08:03:07-04:00</updated><id>//</id><title type="html">My Way</title><subtitle>Just one of many ways to achieve a goal!</subtitle><entry><title type="html">React with TypeScript</title><link href="/react-typescript/" rel="alternate" type="text/html" title="React with TypeScript" /><published>2017-05-27T00:00:00-04:00</published><updated>2017-05-27T00:00:00-04:00</updated><id>/react-typescript</id><content type="html" xml:base="/react-typescript/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="/blog/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="/blog/" rel="alternate" type="text/html" /><updated>2017-05-28T09:31:14-04:00</updated><id>/blog//</id><title type="html">My Way</title><subtitle>Just one of many ways to achieve a goal!</subtitle><entry><title type="html">React with TypeScript</title><link href="/blog/react-typescript/" rel="alternate" type="text/html" title="React with TypeScript" /><published>2017-05-27T00:00:00-04:00</published><updated>2017-05-27T00:00:00-04:00</updated><id>/blog/react-typescript</id><content type="html" xml:base="/blog/react-typescript/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We want to clarify the type of information, each variable holds in our react app.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;To make sure each component is called with the right arguments&lt;/li&gt;
@@ -6,14 +6,10 @@
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;end-goal&quot;&gt;End Goal&lt;/h3&gt;
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Tasted&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Value prop: We drank wine and it is good, we want make a note about it so that we can buy it next time!&lt;/span&gt;
 
+&lt;p&gt;A site that helps us track different types of wine that we drink&lt;/p&gt;
 
-&lt;span class=&quot;c1&quot;&gt;// @TODO a site that helps us track different types of wine that we drink&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// you enter 'name', 'cost', 'rating', and a 'note'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;iframe width=&quot;700&quot; height=&quot;250&quot; src=&quot;https://marcellin.me/apps/tasted/&quot;&gt;&lt;/iframe&gt;
 
 &lt;h3 id=&quot;step-by-step&quot;&gt;Step by step&lt;/h3&gt;
 
@@ -225,7 +221,7 @@ yarn start
 We want to clarify the type of information, each variable holds in our react app.
 
   To make sure each component is called with the right arguments
-  So that a new developer can easily understand the code.</summary></entry><entry><title type="html">App Deployment - Serve Emberjs app on s3</title><link href="/app-deployment-server-app-s3/" rel="alternate" type="text/html" title="App Deployment - Serve Emberjs app on s3" /><published>2016-10-14T00:00:00-04:00</published><updated>2016-10-14T00:00:00-04:00</updated><id>/app-deployment-server-app-s3</id><content type="html" xml:base="/app-deployment-server-app-s3/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+  So that a new developer can easily understand the code.</summary></entry><entry><title type="html">App Deployment - Serve Emberjs app on s3</title><link href="/blog/app-deployment-server-app-s3/" rel="alternate" type="text/html" title="App Deployment - Serve Emberjs app on s3" /><published>2016-10-14T00:00:00-04:00</published><updated>2016-10-14T00:00:00-04:00</updated><id>/blog/app-deployment-server-app-s3</id><content type="html" xml:base="/blog/app-deployment-server-app-s3/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We want to serve an Emberjs application using s3 static site serving capability, and have it(s3) handle internal routing properly.&lt;/p&gt;
 
 &lt;h3 id=&quot;end-goal&quot;&gt;End Goal&lt;/h3&gt;
@@ -345,7 +341,7 @@ Error Document: index.html
 
 &lt;!-- &lt;noscript&gt;&lt;pre&gt;404: Not Found
 &lt;/pre&gt;&lt;/noscript&gt;&lt;script src=&quot;https://gist.github.com/mmistakes/6589546.js&quot;&gt; &lt;/script&gt; --&gt;</content><category term="ember-cli@v1.13.14" /><category term="emberjs" /><category term="deployment" /><category term="aws s3" /><summary type="html">Description
-We want to serve an Emberjs application using s3 static site serving capability, and have it(s3) handle internal routing properly.</summary></entry><entry><title type="html">App Deployment - deploy different index files</title><link href="/app-deployment-different-files/" rel="alternate" type="text/html" title="App Deployment - deploy different index files" /><published>2016-10-11T00:00:00-04:00</published><updated>2016-10-11T00:00:00-04:00</updated><id>/app-deployment-different-files</id><content type="html" xml:base="/app-deployment-different-files/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+We want to serve an Emberjs application using s3 static site serving capability, and have it(s3) handle internal routing properly.</summary></entry><entry><title type="html">App Deployment - deploy different index files</title><link href="/blog/app-deployment-different-files/" rel="alternate" type="text/html" title="App Deployment - deploy different index files" /><published>2016-10-11T00:00:00-04:00</published><updated>2016-10-11T00:00:00-04:00</updated><id>/blog/app-deployment-different-files</id><content type="html" xml:base="/blog/app-deployment-different-files/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We want to deploy an Ember app that uses google analytics tracking script.&lt;/p&gt;
 
 &lt;ul&gt;
@@ -425,7 +421,7 @@ but when you run it &lt;strong&gt;locally&lt;/strong&gt;, you won’t have to wo
 
 &lt;!-- &lt;noscript&gt;&lt;pre&gt;404: Not Found
 &lt;/pre&gt;&lt;/noscript&gt;&lt;script src=&quot;https://gist.github.com/mmistakes/6589546.js&quot;&gt; &lt;/script&gt; --&gt;</content><category term="ember-cli@v1.13.14" /><category term="emberjs" /><category term="embere-cli-deloy" /><category term="deployment" /><category term="Google analytics" /><category term="configuration" /><category term="travis-ci" /><summary type="html">Description
-We want to deploy an Ember app that uses google analytics tracking script.</summary></entry><entry><title type="html">Travis-ci - Send notification with custom message</title><link href="/travis-ci-notification-custom-message/" rel="alternate" type="text/html" title="Travis-ci - Send notification with custom message" /><published>2016-09-29T00:00:00-04:00</published><updated>2016-09-29T00:00:00-04:00</updated><id>/travis-ci-notification-custom-message</id><content type="html" xml:base="/travis-ci-notification-custom-message/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+We want to deploy an Ember app that uses google analytics tracking script.</summary></entry><entry><title type="html">Travis-ci - Send notification with custom message</title><link href="/blog/travis-ci-notification-custom-message/" rel="alternate" type="text/html" title="Travis-ci - Send notification with custom message" /><published>2016-09-29T00:00:00-04:00</published><updated>2016-09-29T00:00:00-04:00</updated><id>/blog/travis-ci-notification-custom-message</id><content type="html" xml:base="/blog/travis-ci-notification-custom-message/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We need to send email (with custom email) from travis to specified users when the build fails.&lt;/p&gt;
 
 &lt;ul&gt;
@@ -518,7 +514,7 @@ We want to deploy an Ember app that uses google analytics tracking script.</summ
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://docs.travis-ci.com/user/notifications#Email-notifications&quot;&gt;Travis documentation&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><category term="travis-ci" /><category term="email notification" /><category term="continuous deployment" /><summary type="html">Description
-We need to send email (with custom email) from travis to specified users when the build fails.</summary></entry><entry><title type="html">Travis-ci - deployment triggers</title><link href="/travis-ci-deploy-triggers/" rel="alternate" type="text/html" title="Travis-ci - deployment triggers" /><published>2016-09-27T00:00:00-04:00</published><updated>2016-09-27T00:00:00-04:00</updated><id>/travis-ci-deploy-triggers</id><content type="html" xml:base="/travis-ci-deploy-triggers/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+We need to send email (with custom email) from travis to specified users when the build fails.</summary></entry><entry><title type="html">Travis-ci - deployment triggers</title><link href="/blog/travis-ci-deploy-triggers/" rel="alternate" type="text/html" title="Travis-ci - deployment triggers" /><published>2016-09-27T00:00:00-04:00</published><updated>2016-09-27T00:00:00-04:00</updated><id>/blog/travis-ci-deploy-triggers</id><content type="html" xml:base="/blog/travis-ci-deploy-triggers/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We need to deploy our Emberjs application when:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -618,7 +614,7 @@ We need to send email (with custom email) from travis to specified users when th
 
 &lt;!-- &lt;noscript&gt;&lt;pre&gt;404: Not Found
 &lt;/pre&gt;&lt;/noscript&gt;&lt;script src=&quot;https://gist.github.com/mmistakes/6589546.js&quot;&gt; &lt;/script&gt; --&gt;</content><category term="ember-cli@v1.13.14" /><category term="emberjs" /><category term="ember-cli-deploy" /><category term="github pages" /><category term="travis-ci" /><category term="triggers" /><category term="continuous deployment" /><summary type="html">Description
-We need to deploy our Emberjs application when:</summary></entry><entry><title type="html">JavaScript - Camelize</title><link href="/javascript-camelize/" rel="alternate" type="text/html" title="JavaScript - Camelize" /><published>2016-09-27T00:00:00-04:00</published><updated>2016-09-27T00:00:00-04:00</updated><id>/javascript-camelize</id><content type="html" xml:base="/javascript-camelize/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+We need to deploy our Emberjs application when:</summary></entry><entry><title type="html">JavaScript - Camelize</title><link href="/blog/javascript-camelize/" rel="alternate" type="text/html" title="JavaScript - Camelize" /><published>2016-09-27T00:00:00-04:00</published><updated>2016-09-27T00:00:00-04:00</updated><id>/blog/javascript-camelize</id><content type="html" xml:base="/blog/javascript-camelize/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We want to join the word tokens of a phrase together, by capitalized each term’s first word.&lt;/p&gt;
 
 &lt;h3 id=&quot;end-goal&quot;&gt;End Goal&lt;/h3&gt;
@@ -691,7 +687,7 @@ We need to deploy our Emberjs application when:</summary></entry><entry><title t
 
 &lt;!-- &lt;noscript&gt;&lt;pre&gt;404: Not Found
 &lt;/pre&gt;&lt;/noscript&gt;&lt;script src=&quot;https://gist.github.com/mmistakes/6589546.js&quot;&gt; &lt;/script&gt; --&gt;</content><category term="JavaScript" /><category term="function" /><summary type="html">Description
-We want to join the word tokens of a phrase together, by capitalized each term’s first word.</summary></entry><entry><title type="html">Acceptance testing - button hover</title><link href="/acceptance-testing-bh/" rel="alternate" type="text/html" title="Acceptance testing - button hover" /><published>2016-09-26T00:00:00-04:00</published><updated>2016-09-26T00:00:00-04:00</updated><id>/acceptance-testing-bh</id><content type="html" xml:base="/acceptance-testing-bh/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+We want to join the word tokens of a phrase together, by capitalized each term’s first word.</summary></entry><entry><title type="html">Acceptance testing - button hover</title><link href="/blog/acceptance-testing-bh/" rel="alternate" type="text/html" title="Acceptance testing - button hover" /><published>2016-09-26T00:00:00-04:00</published><updated>2016-09-26T00:00:00-04:00</updated><id>/blog/acceptance-testing-bh</id><content type="html" xml:base="/blog/acceptance-testing-bh/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We have a search box, a text on top of it, and a question mark to provide useful info in case a user gets confused.&lt;/p&gt;
 
 &lt;p&gt;The information is shown when the user hover over this &lt;strong&gt;question mark&lt;/strong&gt;&lt;/p&gt;

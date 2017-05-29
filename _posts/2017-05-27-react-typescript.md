@@ -13,8 +13,6 @@ We want to clarify the type of information, each variable holds in our react app
 
 ### End Goal
 
-A site that helps us track different types of wine that we drink
-
 <iframe width="700" height="250" src="https://marcellin.me/apps/tasted/" ></iframe>
 
 ### Step by step
@@ -44,118 +42,132 @@ yarn start
 
 * Create a form component for entering information
 
-  * Define interfaces for both properties and state
-
 ```typescript
+// * Define interfaces for both properties and state
 // src/components/tasted-wine-form.tsx
-export interface TWPropsInterface {}
+export interface WineInterface {
+    name: string; cost: number; rating: number; note: string;
+}
+export interface TWPropsInterface {
+  saveRecord: (wine: WineInterface) => void;
+}
 export interface TWStateInterface {
-    value: string;
+    wine: WineInterface;
 }
 ```
 
-  * Define main class
-
 ```typescript
+// * Define main class
 // src/components/tasted-wine-form.tsx
+// top code omitted ...
 class TastedWineForm extends React.Component<TWPropsInterface, TWStateInterface> {
-    constructor(props: TWPropsInterface) {
-        super(props);
-        this.state = { value: '' };
+  constructor(props: TWPropsInterface) {
+      super(props);
+      let wine: WineInterface = EMPTY_RECORD;
+      this.state = { wine };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  resetForm() {
+      this.setState({ wine: EMPTY_RECORD });
+  }
 
-    handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ value: event.target.value });
-    }
+  handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+      let wine = this.state.wine;
+      wine = Object.assign(wine, { [name]: value });
+      this.setState({ wine });
+  }
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        alert('A name was submitted: ' + this.state.value);
         event.preventDefault();
+        this.props.saveRecord(this.state.wine);
+        this.resetForm();
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Name:
-                    <input type="text" value={this.state.value} onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Submit" />
+            <form onSubmit={this.handleSubmit} className="form-inline">
+            { /*
+              @NOTE form content omitted
+              check Github for complete version
+              https://github.com/marcellin-me/tasted/blob/master/src/components/tasted-wine-form.tsx#L62-#L109
+              */ }
             </form>
         );
     }
 }
+// bottom code omitted ...
 ```
 
 * Create component to display entered information
 
-  * Define interfaces for properties, state is ignored because we do not use it anywhere
 
 ```typescript
+// * Define interfaces for properties, state is ignored because we do not use it anywhere
 // src/components/tasted-wine.tsx
 export interface WPropsInterface {
-  wine: { name: string, cost: number, rating: number, note: string }
+  wine: WineInterface
 }
 ```
 
-  * Define main class
 
 ```typescript
+// * Define main class
 // src/components/tasted-wine.tsx
 // @NOTE wine is the domain model
+// top code omitted ...
 class TastedWine extends React.Component<WPropsInterface, null> {
     render() {
         return (
             <div>
-                <div>
-                    Name: <h1> {this.props.wine.name} </h1>
-                </div>
-                <div>
-                    Cost: <span> {this.props.wine.cost} </span>
-                </div>
-                <div>
-                    Rating: <span> {this.props.wine.rating} </span>
-                </div>
-                <div>
-                    Note: {this.props.wine.note}
-                </div>
+            { /*
+              @NOTE div content omitted
+              check Github for complete version
+              https://github.com/marcellin-me/tasted/blob/master/src/components/tasted-wine.tsx#L15-#L25
+              */ }
             </div>
         );
     }
 }
+// bottom code omitted ...
 ```
 
 * Modify the app component to include the form and the display components
 
-  * Define interfaces for both properties and state
-
 ```typescript
+// * Define interfaces for both properties and state
 // src/App.tsx
 export interface APropsInterface {}
 export interface AStateInterface {
-  wineList: Array<{ name: string, cost: number, rating: number, note: string }>;
+  wineList: Array<WineInterface>;
 }
 ```
 
-  * Define main class
-
 ```typescript
+// * Define main class
 // src/App.tsx
+// top code omitted ...
 class App extends React.Component<APropsInterface, AStateInterface> {
   constructor(props: APropsInterface) {
     super(props);
     this.state = { wineList: [] };
+    this.saveRecord = this.saveRecord.bind(this);
+
   }
 
+  // @NOTE middle code omitted ...
+  // check Github for complete version
+
   render() {
-    let TastedWineList = this.state.wineList.map(wine => <TastedWine wine={wine} />);
+    let TastedWineList = this.state.wineList.map((wine, i) => <TastedWine key={i} wine={wine} />);
     return (
-      <div className="App">
+      <div className="App" >
         <div className="tasted-form">
-          <TastedWineForm />
+          <TastedWineForm saveRecord={this.saveRecord} />
         </div>
         <div className="App-intro">
           {TastedWineList}
@@ -164,6 +176,7 @@ class App extends React.Component<APropsInterface, AStateInterface> {
     );
   }
 }
+// bottom code omitted ...
 ```
 
 * Run the app to make all changes have taken effect
@@ -176,10 +189,12 @@ yarn start
 Now you can do this!
 
 ### Resources:
-* [React](http://www.definition-of.com/camelize)
-* [TypeScript](http://www.definition-of.com/camelize)
-* [create-react-app](http://www.definition-of.com/camelize)
-* [create-react-app-typescript](http://www.definition-of.com/camelize)
+* [Tasted Demo](https://marcellin.me/apps/tasted/)
+* [Tasted Github](https://github.com/marcellin-me/tasted)
+* [React](https://facebook.github.io/react/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [create-react-app](https://github.com/facebookincubator/create-react-app)
+* [create-react-app-typescript](https://github.com/wmonk/create-react-app-typescript)
 
 ### use cases
 
