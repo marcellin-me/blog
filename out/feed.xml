@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="/blog/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="/blog/" rel="alternate" type="text/html" /><updated>2017-09-03T14:04:32-04:00</updated><id>/blog//</id><title type="html">My Way</title><subtitle>Just one of many ways to achieve a goal!</subtitle><entry><title type="html">Testable Redirect Logic</title><link href="/blog/ember-testable-redirect/" rel="alternate" type="text/html" title="Testable Redirect Logic" /><published>2017-09-03T00:00:00-04:00</published><updated>2017-09-03T00:00:00-04:00</updated><id>/blog/ember-testable-redirect</id><content type="html" xml:base="/blog/ember-testable-redirect/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="/blog/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="/blog/" rel="alternate" type="text/html" /><updated>2017-09-03T14:31:01-04:00</updated><id>/blog//</id><title type="html">My Way</title><subtitle>Just one of many ways to achieve a goal!</subtitle><entry><title type="html">Testable Redirect Logic</title><link href="/blog/ember-testable-redirect/" rel="alternate" type="text/html" title="Testable Redirect Logic" /><published>2017-09-03T00:00:00-04:00</published><updated>2017-09-03T00:00:00-04:00</updated><id>/blog/ember-testable-redirect</id><content type="html" xml:base="/blog/ember-testable-redirect/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We want to be able to write acceptance test for our Ember app that allow people to navigate to external websites as well as internal pages.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Ability to ensure external redirect
@@ -53,7 +53,7 @@ ember install ember-cli-mirage
   &lt;li&gt;Run the newly create app&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ember start
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ember serve
 &lt;span class=&quot;c&quot;&gt;# you should see a running app by visiting http://localhost:4200&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -157,7 +157,7 @@ ember g route restaurants/restaurant &lt;span class=&quot;c&quot;&gt;# show menu
 &lt;/ul&gt;
 
 &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# do this if you have stopped your app&lt;/span&gt;
-ember start
+ember serve
 &lt;span class=&quot;c&quot;&gt;# you should see a running app by visiting http://localhost:4200&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -167,7 +167,7 @@ ember start
 &lt;h3 id=&quot;resources&quot;&gt;Resources:&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://marcellin.me/apps/local/&quot;&gt;Local Demo&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/marcellin-me/local&quot;&gt;Tasted Github&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/marcellin-me/local&quot;&gt;Local Github&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://guides.emberjs.com/v2.14.0/routing/redirection/&quot;&gt;Ember Redirection&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 

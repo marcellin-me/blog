@@ -51,7 +51,7 @@ ember install ember-cli-mirage
 * Run the newly create app
 
 ```sh
-ember start
+ember serve
 # you should see a running app by visiting http://localhost:4200
 ```
 
@@ -125,7 +125,7 @@ test('it calls error function for invalid links/routes', function(assert) {
 * Run unit test for `build-transition` function
 
 ```sh
-ember test
+ember t -s -m 'Unit | Utility | build transition'
 ```
 
 * Use the `build-transition` function inside `restaurants/index` route
@@ -141,7 +141,7 @@ ember test
 
 ```sh
 # do this if you have stopped your app
-ember start
+ember serve
 # you should see a running app by visiting http://localhost:4200
 ```
 
@@ -149,7 +149,7 @@ Now you can do this!
 
 ### Resources:
 * [Local Demo](https://marcellin.me/apps/local/)
-* [Tasted Github](https://github.com/marcellin-me/local)
+* [Local Github](https://github.com/marcellin-me/local)
 * [Ember Redirection](https://guides.emberjs.com/v2.14.0/routing/redirection/)
 
 ### use cases
