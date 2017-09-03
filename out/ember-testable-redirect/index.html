@@ -1,0 +1,402 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Testable Redirect Logic &#8211; My Way</title>
+<meta name="description" content="Implement an Ember utility function that provides a way to make internal or external transition">
+<meta name="keywords" content="ember-cli@v2.14.2, Emberjs, Ember, Ember-cli-mirage, Utility Function, utils, Testing, Redirect, External Urls, Absolute Urls">
+
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Testable Redirect Logic">
+<meta property="og:description" content="Implement an Ember utility function that provides a way to make internal or external transition">
+<meta property="og:url" content="/blog/ember-testable-redirect/">
+<meta property="og:site_name" content="My Way">
+
+<meta name="google-site-verification" content="googleef08c87c1edcadeb">
+
+
+
+<link rel="canonical" href="/blog/ember-testable-redirect/">
+<link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="My Way Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="/blog/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/blog/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/blog/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/blog/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/blog/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/blog/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/blog/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="/blog/">Home</a></li>
+		<li>
+			<a href="#">About</a>
+			<ul class="dl-submenu">
+				<li>
+					<img src="/blog/images/user-avatar.png" alt="Marcellin Nshimiyimana photo" class="author-photo">
+					<h4>Marcellin Nshimiyimana</h4>
+					<p>Software engineer at Fusemachines</p>
+				</li>
+				<li><a href="/blog/about/"><span class="btn btn-inverse">Learn More</span></a></li>
+				<li>
+					<a href="mailto:mars@fusemachines.com"><i class="fa fa-fw fa-envelope"></i> Email</a>
+				</li>
+				
+				
+				
+				<li>
+					<a href="https://linkedin.com/in/https://www.linkedin.com/in/marcellin-nshimiyimana-b069b337"><i class="fa fa-fw fa-linkedin"></i> LinkedIn</a>
+				</li>
+				<li>
+					<a href="https://github.com/https://github.com/fuse-mars"><i class="fa fa-fw fa-github"></i> GitHub</a>
+				</li>
+				<li>
+					<a href="http://stackexchange.com/users/4700109/user3803896"><i class="fa fa-fw fa-stack-exchange"></i> Stackexchange</a>
+				</li>
+				
+				
+				
+			</ul><!-- /.dl-submenu -->
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="/blog/posts/">All Posts</a></li>
+				<li><a href="/blog/tags/">All Tags</a></li>
+			</ul>
+		</li>
+		
+	</ul><!-- /.dl-menu -->
+</nav><!-- /.dl-menuwrapper -->
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <header class="header-title">
+      <div class="header-title-wrap">
+        
+          <h1 class="entry-title"><a href="/blog/ember-testable-redirect/" rel="bookmark" title="Testable Redirect Logic">Testable Redirect Logic</a></h1>
+        
+        <h2><span class="entry-date date published"><time datetime="2017-09-03T00:00:00-04:00">September 03, 2017</time></span></h2>
+        
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+Reading time ~2 minutes
+        </p><!-- /.entry-reading-time -->
+        
+      </div><!-- /.header-title-wrap -->
+    </header>
+    <div class="entry-content">
+      <h3 id="description">Description</h3>
+<p>We want to be able to write acceptance test for our Ember app that allow people to navigate to external websites as well as internal pages.</p>
+<ul>
+  <li>Ability to ensure external redirect
+    <ul>
+      <li>As of now, I have not found a way to test logic that involves external redirect (i.e. call to <code class="highlighter-rouge">window.location.replace ...</code>)</li>
+    </ul>
+  </li>
+  <li>Ability to ensure internal redirect</li>
+</ul>
+
+<h3 id="end-goal">End Goal</h3>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// app/utils/build-transition.js</span>
+<span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isValidLink</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">isValidRoute</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">route</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">},</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h3 id="step-by-step">Step by step</h3>
+
+<ul>
+  <li>Create the application and call it <code class="highlighter-rouge">Local</code></li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># * **Local** allows people to find restaurants that offer local food and drinks(ex: yak or rice wine in Nepal)</span>
+<span class="c"># * User can view description and offered local refreshments of each found restaurant.</span>
+<span class="c"># * User can view menu on the restaurant's website `External transition`</span>
+<span class="c"># * For those restaurants that do not have a website, User can view menu on restaurant's page `Internal transition`</span>
+
+<span class="c"># we use node v8.4.0, npm 5.3.0, and ember-cli 2.14.2</span>
+ember new <span class="nb">local</span> <span class="o">&amp;&amp;</span> <span class="nb">cd local</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Install dependancies</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># we use ember-cli-mirage for backend simulation</span>
+ember install ember-cli-mirage
+</code></pre>
+</div>
+
+<ul>
+  <li>Run the newly create app</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember start
+<span class="c"># you should see a running app by visiting http://localhost:4200</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Create necessary routes</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># we use ember-cli-mirage for backend simulation</span>
+ember g route restaurants
+ember g route restaurants/index <span class="c"># show list of found restaurants</span>
+ember g route restaurants/restaurant <span class="c"># show menu of the restaurant</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Create <code class="highlighter-rouge">build-transition</code> utility function</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember g util build-transition
+</code></pre>
+</div>
+
+<ul>
+  <li>Add logic to the <code class="highlighter-rouge">build-transition</code> utility function</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// our utility function allows us to</span>
+<span class="c1">// 1. visit external url if user provides valid url</span>
+<span class="c1">// 2. visit a page in our app if user provides a valid route's path name</span>
+<span class="c1">// app/utils/build-transition.js</span>
+<span class="c1">// ... check repo for implementation of isValidLink and isValidRoute</span>
+<span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isValidLink</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">isValidRoute</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">route</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">input</span><span class="p">)},</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Write a unit test for <code class="highlighter-rouge">build-transition</code> function</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * NOTE that we are not calling run, but instead checking to see what would get executed if we call it.</span>
+<span class="c1">// tests/unit/utils/build-transition.js</span>
+<span class="c1">// ...</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls window location function for external links'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'https://example.com/menu.html'</span><span class="p">;</span>
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
+<span class="p">});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls transitionTo function for internal links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'application'</span><span class="p">;</span>  
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
+<span class="p">});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls error function for invalid links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'invalid.route'</span><span class="p">;</span>
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'error'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Run unit test for <code class="highlighter-rouge">build-transition</code> function</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember <span class="nb">test</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Use the <code class="highlighter-rouge">build-transition</code> function inside <code class="highlighter-rouge">restaurants/index</code> route</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// app/routes/restaurants/index.js</span>
+<span class="c1">// ...</span>
+  <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">menuLink</span><span class="p">).</span><span class="nx">run</span><span class="p">();</span>
+<span class="c1">// ...</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Run the app to make sure all changes have taken effect</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># do this if you have stopped your app</span>
+ember start
+<span class="c"># you should see a running app by visiting http://localhost:4200</span>
+</code></pre>
+</div>
+
+<p>Now you can do this!</p>
+
+<h3 id="resources">Resources:</h3>
+<ul>
+  <li><a href="https://marcellin.me/apps/local/">Local Demo</a></li>
+  <li><a href="https://github.com/marcellin-me/local">Tasted Github</a></li>
+  <li><a href="https://guides.emberjs.com/v2.14.0/routing/redirection/">Ember Redirection</a></li>
+</ul>
+
+<h3 id="use-cases">use cases</h3>
+
+<ul>
+  <li>Writing Acceptance test for <strong>Signup with Google</strong> feature</li>
+</ul>
+
+<!-- <noscript><pre>404: Not Found
+</pre></noscript><script src="https://gist.github.com/mmistakes/6589546.js"> </script> -->
+
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="/blog/tags/#ember-cli@v2.14.2" title="Pages tagged ember-cli@v2.14.2" class="tag"><span class="term">ember-cli@v2.14.2</span></a><a href="/blog/tags/#Emberjs" title="Pages tagged Emberjs" class="tag"><span class="term">Emberjs</span></a><a href="/blog/tags/#Ember" title="Pages tagged Ember" class="tag"><span class="term">Ember</span></a><a href="/blog/tags/#Ember-cli-mirage" title="Pages tagged Ember-cli-mirage" class="tag"><span class="term">Ember-cli-mirage</span></a><a href="/blog/tags/#Utility Function" title="Pages tagged Utility Function" class="tag"><span class="term">Utility Function</span></a><a href="/blog/tags/#utils" title="Pages tagged utils" class="tag"><span class="term">utils</span></a><a href="/blog/tags/#Testing" title="Pages tagged Testing" class="tag"><span class="term">Testing</span></a><a href="/blog/tags/#Redirect" title="Pages tagged Redirect" class="tag"><span class="term">Redirect</span></a><a href="/blog/tags/#External Urls" title="Pages tagged External Urls" class="tag"><span class="term">External Urls</span></a><a href="/blog/tags/#Absolute Urls" title="Pages tagged Absolute Urls" class="tag"><span class="term">Absolute Urls</span></a></span>
+        <span>Updated on <span class="entry-date date updated"><time datetime="2017-09-03 21:33:56 +0545">September 03, 2017</time></span></span>
+        <span class="author vcard"><span class="fn">Marcellin Nshimiyimana</span></span>
+        <div class="social-share">
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=/blog/ember-testable-redirect/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=/blog/ember-testable-redirect/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=/blog/ember-testable-redirect/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+  </ul>
+</div><!-- /.social-share -->
+      </footer>
+    </div><!-- /.entry-content -->
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="/blog/react-typescript/" class="read-more-btn">Read More</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="/blog/react-typescript/" title="React with TypeScript">React with TypeScript</a></h3>
+      <p>Implement a React application using TypeScript <a href="/blog/react-typescript/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="/blog/app-deployment-server-app-s3/" title="App Deployment - Serve Emberjs app on s3">App Deployment - Serve Emberjs app on s3</a></h4>
+        <span>Published on October 14, 2016</span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="/blog/app-deployment-different-files/" title="App Deployment - deploy different index files">App Deployment - deploy different index files</a></h4>
+        <span>Published on October 11, 2016</span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2017 Marcellin Nshimiyimana. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/hpstr-jekyll-theme/" rel="nofollow">HPSTR Theme</a>.</span>
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/blog/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/blog/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68265226-1', 'auto');  
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'daily-discovery'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	        
+
+</body>
+</html>

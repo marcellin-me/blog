@@ -128,6 +128,209 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2017-09-03T00:00:00-04:00"><a href="/blog/ember-testable-redirect/">September 03, 2017</a></time></span><span class="author vcard"><span class="fn"><a href="/blog/about/" title="About Marcellin Nshimiyimana">Marcellin Nshimiyimana</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/blog/ember-testable-redirect/" rel="bookmark" title="Testable Redirect Logic" itemprop="url">Testable Redirect Logic</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h3 id="description">Description</h3>
+<p>We want to be able to write acceptance test for our Ember app that allow people to navigate to external websites as well as internal pages.</p>
+<ul>
+  <li>Ability to ensure external redirect
+    <ul>
+      <li>As of now, I have not found a way to test logic that involves external redirect (i.e. call to <code class="highlighter-rouge">window.location.replace ...</code>)</li>
+    </ul>
+  </li>
+  <li>Ability to ensure internal redirect</li>
+</ul>
+
+<h3 id="end-goal">End Goal</h3>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// app/utils/build-transition.js</span>
+<span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isValidLink</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">isValidRoute</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">route</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">},</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h3 id="step-by-step">Step by step</h3>
+
+<ul>
+  <li>Create the application and call it <code class="highlighter-rouge">Local</code></li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># * **Local** allows people to find restaurants that offer local food and drinks(ex: yak or rice wine in Nepal)</span>
+<span class="c"># * User can view description and offered local refreshments of each found restaurant.</span>
+<span class="c"># * User can view menu on the restaurant's website `External transition`</span>
+<span class="c"># * For those restaurants that do not have a website, User can view menu on restaurant's page `Internal transition`</span>
+
+<span class="c"># we use node v8.4.0, npm 5.3.0, and ember-cli 2.14.2</span>
+ember new <span class="nb">local</span> <span class="o">&amp;&amp;</span> <span class="nb">cd local</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Install dependancies</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># we use ember-cli-mirage for backend simulation</span>
+ember install ember-cli-mirage
+</code></pre>
+</div>
+
+<ul>
+  <li>Run the newly create app</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember start
+<span class="c"># you should see a running app by visiting http://localhost:4200</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Create necessary routes</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># we use ember-cli-mirage for backend simulation</span>
+ember g route restaurants
+ember g route restaurants/index <span class="c"># show list of found restaurants</span>
+ember g route restaurants/restaurant <span class="c"># show menu of the restaurant</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Create <code class="highlighter-rouge">build-transition</code> utility function</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember g util build-transition
+</code></pre>
+</div>
+
+<ul>
+  <li>Add logic to the <code class="highlighter-rouge">build-transition</code> utility function</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// our utility function allows us to</span>
+<span class="c1">// 1. visit external url if user provides valid url</span>
+<span class="c1">// 2. visit a page in our app if user provides a valid route's path name</span>
+<span class="c1">// app/utils/build-transition.js</span>
+<span class="c1">// ... check repo for implementation of isValidLink and isValidRoute</span>
+<span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isValidLink</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">isValidRoute</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">route</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">run</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">input</span><span class="p">)},</span> <span class="na">valid</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Write a unit test for <code class="highlighter-rouge">build-transition</code> function</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * NOTE that we are not calling run, but instead checking to see what would get executed if we call it.</span>
+<span class="c1">// tests/unit/utils/build-transition.js</span>
+<span class="c1">// ...</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls window location function for external links'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'https://example.com/menu.html'</span><span class="p">;</span>
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
+<span class="p">});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls transitionTo function for internal links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'application'</span><span class="p">;</span>  
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
+<span class="p">});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls error function for invalid links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'invalid.route'</span><span class="p">;</span>
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
+        <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'error'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Run unit test for <code class="highlighter-rouge">build-transition</code> function</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember <span class="nb">test</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Use the <code class="highlighter-rouge">build-transition</code> function inside <code class="highlighter-rouge">restaurants/index</code> route</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// app/routes/restaurants/index.js</span>
+<span class="c1">// ...</span>
+  <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">menuLink</span><span class="p">).</span><span class="nx">run</span><span class="p">();</span>
+<span class="c1">// ...</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Run the app to make sure all changes have taken effect</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># do this if you have stopped your app</span>
+ember start
+<span class="c"># you should see a running app by visiting http://localhost:4200</span>
+</code></pre>
+</div>
+
+<p>Now you can do this!</p>
+
+<h3 id="resources">Resources:</h3>
+<ul>
+  <li><a href="https://marcellin.me/apps/local/">Local Demo</a></li>
+  <li><a href="https://github.com/marcellin-me/local">Tasted Github</a></li>
+  <li><a href="https://guides.emberjs.com/v2.14.0/routing/redirection/">Ember Redirection</a></li>
+</ul>
+
+<h3 id="use-cases">use cases</h3>
+
+<ul>
+  <li>Writing Acceptance test for <strong>Signup with Google</strong> feature</li>
+</ul>
+
+<!-- <noscript><pre>404: Not Found
+</pre></noscript><script src="https://gist.github.com/mmistakes/6589546.js"> </script> -->
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2017-05-27T00:00:00-04:00"><a href="/blog/react-typescript/">May 27, 2017</a></time></span><span class="author vcard"><span class="fn"><a href="/blog/about/" title="About Marcellin Nshimiyimana">Marcellin Nshimiyimana</a></span></span>
       
       <span class="entry-reading-time">
@@ -328,7 +531,7 @@ yarn start
 </div>
 
 <ul>
-  <li>Run the app to make all changes have taken effect</li>
+  <li>Run the app to make sure all changes have taken effect</li>
 </ul>
 
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>yarn start
@@ -352,7 +555,7 @@ yarn start
 
 <ul>
   <li>TypeScript is good for big JavaScript projects which are maintained by multiple developers</li>
-  <li>React can be a good replacement for jQuery, it component based structure provides clean and readable code.</li>
+  <li>React can be a good replacement for jQuery, its component based structure provides clean and readable code.</li>
 </ul>
 
 <!-- <noscript><pre>404: Not Found
@@ -716,128 +919,6 @@ Reading time ~1 minute
 <ul>
   <li><a href="https://docs.travis-ci.com/user/notifications#Email-notifications">Travis documentation</a></li>
 </ul>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2016-09-27T00:00:00-04:00"><a href="/blog/travis-ci-deploy-triggers/">September 27, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="/blog/about/" title="About Marcellin Nshimiyimana">Marcellin Nshimiyimana</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/blog/travis-ci-deploy-triggers/" rel="bookmark" title="Travis-ci - deployment triggers" itemprop="url">Travis-ci - deployment triggers</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <h3 id="description">Description</h3>
-<p>We need to deploy our Emberjs application when:</p>
-
-<ul>
-  <li>code is pushed/merged into <strong>deployment</strong> branch.</li>
-  <li>all acceptance tests succeed.</li>
-</ul>
-
-<h3 id="end-goal">End Goal</h3>
-
-<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">before_deploy</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ember test -f 'Acceptance |'</span>
-<span class="s">deploy</span><span class="pi">:</span>
-  <span class="s">skip_cleanup</span><span class="pi">:</span> <span class="s">true</span>
-  <span class="s">provider</span><span class="pi">:</span> <span class="s">script</span>
-  <span class="s">script</span><span class="pi">:</span> <span class="s">ember deploy testing --verbose</span>
-  <span class="s">on</span><span class="pi">:</span>
-    <span class="s">branch</span><span class="pi">:</span> <span class="s">deployment</span>
-</code></pre>
-</div>
-
-<h3 id="step-by-step">Step by step</h3>
-
-<ul>
-  <li>Setup deployment trigger</li>
-</ul>
-
-<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">deploy</span><span class="pi">:</span>
-  <span class="s">on</span><span class="pi">:</span>
-    <span class="s">branch</span><span class="pi">:</span> <span class="s">deployment</span>
-</code></pre>
-</div>
-
-<ul>
-  <li>Run the acceptance tests</li>
-</ul>
-
-<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">before_deploy</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ember test -s -f 'Acceptance |'</span>
-</code></pre>
-</div>
-
-<ul>
-  <li>Add the deployment command</li>
-</ul>
-
-<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">deploy</span><span class="pi">:</span>
-  <span class="s">provider</span><span class="pi">:</span> <span class="s">script</span>
-  <span class="s">script</span><span class="pi">:</span> <span class="s">ember deploy testing --verbose</span>
-</code></pre>
-</div>
-
-<ul>
-  <li>Complete travis config file</li>
-</ul>
-
-<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="nn">---</span>
-<span class="s">language</span><span class="pi">:</span> <span class="s">node_js</span>
-<span class="s">node_js</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">4.5.0"</span>
-
-<span class="s">sudo</span><span class="pi">:</span> <span class="s">false</span>
-
-<span class="s">cache</span><span class="pi">:</span>
-  <span class="s">directories</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">node_modules</span>
-
-<span class="s">before_install</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">npm</span><span class="nv"> </span><span class="s">config</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">spin</span><span class="nv"> </span><span class="s">false"</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">npm</span><span class="nv"> </span><span class="s">install</span><span class="nv"> </span><span class="s">-g</span><span class="nv"> </span><span class="s">npm@^2"</span>
-
-<span class="s">install</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">npm install -g bower</span>
-  <span class="pi">-</span> <span class="s">npm install</span>
-  <span class="pi">-</span> <span class="s">bower install</span>
-
-<span class="s">script</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">npm test</span>
-
-<span class="s">before_deploy</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ember test -s -f 'Acceptance |'</span>
-<span class="s">deploy</span><span class="pi">:</span>
-  <span class="s">skip_cleanup</span><span class="pi">:</span> <span class="s">true</span>
-  <span class="s">provider</span><span class="pi">:</span> <span class="s">script</span>
-  <span class="s">script</span><span class="pi">:</span> <span class="s">ember deploy testing --verbose</span>
-  <span class="s">on</span><span class="pi">:</span>
-    <span class="s">branch</span><span class="pi">:</span> <span class="s">deployment</span>
-</code></pre>
-</div>
-
-<p>Now you can do this!</p>
-
-<h3 id="github-resources">GitHub resources:</h3>
-<ul>
-  <li><a href="http://nshimiye.com/tutorial-ember-cli-1.13.14/tests/?testId=6c41b476">Travis config file</a></li>
-</ul>
-
-<!-- <noscript><pre>404: Not Found
-</pre></noscript><script src="https://gist.github.com/mmistakes/6589546.js"> </script> -->
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

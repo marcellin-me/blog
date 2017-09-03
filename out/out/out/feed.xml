@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="/blog/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="/blog/" rel="alternate" type="text/html" /><updated>2017-05-29T09:59:41-04:00</updated><id>/blog//</id><title type="html">My Way</title><subtitle>Just one of many ways to achieve a goal!</subtitle><entry><title type="html">React with TypeScript</title><link href="/blog/react-typescript/" rel="alternate" type="text/html" title="React with TypeScript" /><published>2017-05-27T00:00:00-04:00</published><updated>2017-05-27T00:00:00-04:00</updated><id>/blog/react-typescript</id><content type="html" xml:base="/blog/react-typescript/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="/blog/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="/blog/" rel="alternate" type="text/html" /><updated>2017-05-29T10:46:23-04:00</updated><id>/blog//</id><title type="html">My Way</title><subtitle>Just one of many ways to achieve a goal!</subtitle><entry><title type="html">React with TypeScript</title><link href="/blog/react-typescript/" rel="alternate" type="text/html" title="React with TypeScript" /><published>2017-05-27T00:00:00-04:00</published><updated>2017-05-27T00:00:00-04:00</updated><id>/blog/react-typescript</id><content type="html" xml:base="/blog/react-typescript/">&lt;h3 id=&quot;description&quot;&gt;Description&lt;/h3&gt;
 &lt;p&gt;We want to clarify the type of information, each variable holds in our react app.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;To make sure each component is called with the right arguments&lt;/li&gt;
@@ -6,8 +6,6 @@
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;end-goal&quot;&gt;End Goal&lt;/h3&gt;
-
-&lt;p&gt;A site that helps us track different types of wine that we drink&lt;/p&gt;
 
 &lt;iframe width=&quot;700&quot; height=&quot;250&quot; src=&quot;https://marcellin.me/apps/tasted/&quot;&gt;&lt;/iframe&gt;
 
@@ -93,10 +91,11 @@ yarn start
 
     &lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;form&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onSubmit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handleSubmit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;form&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onSubmit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handleSubmit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;className&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;form-inline&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/*
               @NOTE form content omitted
               check Github for complete version
+              https://github.com/marcellin-me/tasted/blob/master/src/components/tasted-wine-form.tsx#L62-#L109
               */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
             &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/form&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
 &lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -129,6 +128,7 @@ yarn start
             &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/*
               @NOTE div content omitted
               check Github for complete version
+              https://github.com/marcellin-me/tasted/blob/master/src/components/tasted-wine.tsx#L15-#L25
               */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
             &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/div&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
 &lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;

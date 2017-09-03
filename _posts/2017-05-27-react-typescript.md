@@ -179,7 +179,7 @@ class App extends React.Component<APropsInterface, AStateInterface> {
 // bottom code omitted ...
 ```
 
-* Run the app to make all changes have taken effect
+* Run the app to make sure all changes have taken effect
 
 ```sh
 yarn start
@@ -199,6 +199,6 @@ Now you can do this!
 ### use cases
 
 * TypeScript is good for big JavaScript projects which are maintained by multiple developers
-* React can be a good replacement for jQuery, it component based structure provides clean and readable code.
+* React can be a good replacement for jQuery, its component based structure provides clean and readable code.
 
 <!-- {% gist mmistakes/6589546 %} -->

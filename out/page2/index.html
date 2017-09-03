@@ -128,6 +128,128 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-09-27T00:00:00-04:00"><a href="/blog/travis-ci-deploy-triggers/">September 27, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="/blog/about/" title="About Marcellin Nshimiyimana">Marcellin Nshimiyimana</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/blog/travis-ci-deploy-triggers/" rel="bookmark" title="Travis-ci - deployment triggers" itemprop="url">Travis-ci - deployment triggers</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h3 id="description">Description</h3>
+<p>We need to deploy our Emberjs application when:</p>
+
+<ul>
+  <li>code is pushed/merged into <strong>deployment</strong> branch.</li>
+  <li>all acceptance tests succeed.</li>
+</ul>
+
+<h3 id="end-goal">End Goal</h3>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">before_deploy</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ember test -f 'Acceptance |'</span>
+<span class="s">deploy</span><span class="pi">:</span>
+  <span class="s">skip_cleanup</span><span class="pi">:</span> <span class="s">true</span>
+  <span class="s">provider</span><span class="pi">:</span> <span class="s">script</span>
+  <span class="s">script</span><span class="pi">:</span> <span class="s">ember deploy testing --verbose</span>
+  <span class="s">on</span><span class="pi">:</span>
+    <span class="s">branch</span><span class="pi">:</span> <span class="s">deployment</span>
+</code></pre>
+</div>
+
+<h3 id="step-by-step">Step by step</h3>
+
+<ul>
+  <li>Setup deployment trigger</li>
+</ul>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">deploy</span><span class="pi">:</span>
+  <span class="s">on</span><span class="pi">:</span>
+    <span class="s">branch</span><span class="pi">:</span> <span class="s">deployment</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Run the acceptance tests</li>
+</ul>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">before_deploy</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ember test -s -f 'Acceptance |'</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Add the deployment command</li>
+</ul>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">deploy</span><span class="pi">:</span>
+  <span class="s">provider</span><span class="pi">:</span> <span class="s">script</span>
+  <span class="s">script</span><span class="pi">:</span> <span class="s">ember deploy testing --verbose</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Complete travis config file</li>
+</ul>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="nn">---</span>
+<span class="s">language</span><span class="pi">:</span> <span class="s">node_js</span>
+<span class="s">node_js</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">4.5.0"</span>
+
+<span class="s">sudo</span><span class="pi">:</span> <span class="s">false</span>
+
+<span class="s">cache</span><span class="pi">:</span>
+  <span class="s">directories</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">node_modules</span>
+
+<span class="s">before_install</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">npm</span><span class="nv"> </span><span class="s">config</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">spin</span><span class="nv"> </span><span class="s">false"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">npm</span><span class="nv"> </span><span class="s">install</span><span class="nv"> </span><span class="s">-g</span><span class="nv"> </span><span class="s">npm@^2"</span>
+
+<span class="s">install</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">npm install -g bower</span>
+  <span class="pi">-</span> <span class="s">npm install</span>
+  <span class="pi">-</span> <span class="s">bower install</span>
+
+<span class="s">script</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">npm test</span>
+
+<span class="s">before_deploy</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ember test -s -f 'Acceptance |'</span>
+<span class="s">deploy</span><span class="pi">:</span>
+  <span class="s">skip_cleanup</span><span class="pi">:</span> <span class="s">true</span>
+  <span class="s">provider</span><span class="pi">:</span> <span class="s">script</span>
+  <span class="s">script</span><span class="pi">:</span> <span class="s">ember deploy testing --verbose</span>
+  <span class="s">on</span><span class="pi">:</span>
+    <span class="s">branch</span><span class="pi">:</span> <span class="s">deployment</span>
+</code></pre>
+</div>
+
+<p>Now you can do this!</p>
+
+<h3 id="github-resources">GitHub resources:</h3>
+<ul>
+  <li><a href="http://nshimiye.com/tutorial-ember-cli-1.13.14/tests/?testId=6c41b476">Travis config file</a></li>
+</ul>
+
+<!-- <noscript><pre>404: Not Found
+</pre></noscript><script src="https://gist.github.com/mmistakes/6589546.js"> </script> -->
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2016-09-27T00:00:00-04:00"><a href="/blog/javascript-camelize/">September 27, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="/blog/about/" title="About Marcellin Nshimiyimana">Marcellin Nshimiyimana</a></span></span>
       
       <span class="entry-reading-time">
