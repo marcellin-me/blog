@@ -1,4 +1,5 @@
 #!/bin/bash
+rm -rf out && mkdir out
 cp -rf deployment-files/_config.yml .
 bundle exec jekyll build
 cp -rf _site/* out/

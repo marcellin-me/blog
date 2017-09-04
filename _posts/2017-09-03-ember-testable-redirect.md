@@ -81,7 +81,7 @@ ember g util build-transition
 export default function buildTransition(route, input) {
   if (isValidLink(input)) {
     return { run: () => window.location.replace(input), valid: true };
-  } else if(isValidRoute(input)) {
+  } else if(isPresent(route) && isValidRoute(getOwner(route), input)) {
     return { run: () => route.transitionTo(input), valid: true };
   } else {
     return { run: () => {throw new Error(input)}, valid: false };
@@ -97,18 +97,17 @@ export default function buildTransition(route, input) {
 // ...
 let MOCKApp;
 module('Unit | Utility | build transition', {
-	before() {
-		MOCKApp = run(() => {
-			let application = Application.create();
-			application.IndexRoute = Route.extend({});
-			application.PageRoute = Route.extend({});
-			return application;
-		});
-		// END stub a route
-	},
-	after() {
-		run(MOCKApp, 'destroy');
-	}
+  before() {
+    MOCKApp = run(() => {
+      let application = Application.create();
+      application.IndexRoute = Route.extend({});
+      application.PageRoute = Route.extend({});
+      return application;
+    });
+  },
+  after() {
+    run(MOCKApp, 'destroy');
+  }
 });
 // ...
 ```
@@ -117,12 +116,11 @@ module('Unit | Utility | build transition', {
 // tests/unit/utils/build-transition.js
 // ...
 test('it calls window location function for external links', function(assert) {
-        let link = 'https://example.com/menu.html';
-
-        let result = buildTransition(link);
-        assert.ok(result.valid);
-        assert.ok(!result.run.toString().includes('transitionTo'));
-        assert.ok(result.run.toString().includes('window.location'));
+  let link = 'https://example.com/menu.html';
+  let result = buildTransition(link);
+  assert.ok(result.valid);
+  assert.ok(!result.run.toString().includes('transitionTo'));
+  assert.ok(result.run.toString().includes('window.location'));
 });
 // ...
 ```
@@ -131,13 +129,13 @@ test('it calls window location function for external links', function(assert) {
 // tests/unit/utils/build-transition.js
 // ...
 test('it calls transitionTo function for internal links/routes', function(assert) {
-        let index = MOCKApp.__container__.lookup('route:index');
-      	let link = 'page'; // this is the route name (not the path name)
+  let index = MOCKApp.__container__.lookup('route:index');
+  let link = 'page'; // this is the route name (not the path name)
 
-        let result = buildTransition(index, link);
-        assert.ok(result.valid);
-        assert.ok(!result.run.toString().includes('window.location'));
-        assert.ok(result.run.toString().includes('transitionTo'));
+  let result = buildTransition(index, link);
+  assert.ok(result.valid);
+  assert.ok(!result.run.toString().includes('window.location'));
+  assert.ok(result.run.toString().includes('transitionTo'));
 });
 // ...
 ```
@@ -146,13 +144,13 @@ test('it calls transitionTo function for internal links/routes', function(assert
 // tests/unit/utils/build-transition.js
 // ...
 test('it calls error function for invalid links/routes', function(assert) {
-        let link = 'invalid.route';
+  let link = 'invalid.route';
 
-        let result = buildTransition(link);
-        assert.ok(!result.valid);
-        assert.ok(!result.run.toString().includes('window.location'));
-        assert.ok(!result.run.toString().includes('transitionTo'));
-        assert.ok(result.run.toString().includes('error'));
+  let result = buildTransition(link);
+  assert.ok(!result.valid);
+  assert.ok(!result.run.toString().includes('window.location'));
+  assert.ok(!result.run.toString().includes('transitionTo'));
+  assert.ok(result.run.toString().includes('error'));
 });
 // ...
 ```
