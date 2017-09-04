@@ -133,7 +133,7 @@
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-Reading time ~2 minutes
+Reading time ~3 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
@@ -249,6 +249,27 @@ ember g route restaurants/restaurant <span class="c"># show menu of the restaura
 <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// * NOTE that we are not calling run, but instead checking to see what would get executed if we call it.</span>
 <span class="c1">// tests/unit/utils/build-transition.js</span>
 <span class="c1">// ...</span>
+<span class="kd">let</span> <span class="nx">MOCKApp</span><span class="p">;</span>
+<span class="nx">module</span><span class="p">(</span><span class="s1">'Unit | Utility | build transition'</span><span class="p">,</span> <span class="p">{</span>
+	<span class="nx">before</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">MOCKApp</span> <span class="o">=</span> <span class="nx">run</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+			<span class="kd">let</span> <span class="nx">application</span> <span class="o">=</span> <span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">();</span>
+			<span class="nx">application</span><span class="p">.</span><span class="nx">IndexRoute</span> <span class="o">=</span> <span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+			<span class="nx">application</span><span class="p">.</span><span class="nx">PageRoute</span> <span class="o">=</span> <span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+			<span class="k">return</span> <span class="nx">application</span><span class="p">;</span>
+		<span class="p">});</span>
+		<span class="c1">// END stub a route</span>
+	<span class="p">},</span>
+	<span class="nx">after</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">run</span><span class="p">(</span><span class="nx">MOCKApp</span><span class="p">,</span> <span class="s1">'destroy'</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+<span class="c1">// ...</span>
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// tests/unit/utils/build-transition.js</span>
+<span class="c1">// ...</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'it calls window location function for external links'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'https://example.com/menu.html'</span><span class="p">;</span>
 
@@ -257,14 +278,27 @@ ember g route restaurants/restaurant <span class="c"># show menu of the restaura
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
 <span class="p">});</span>
-<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls transitionTo function for internal links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'application'</span><span class="p">;</span>  
+<span class="c1">// ...</span>
+</code></pre>
+</div>
 
-        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// tests/unit/utils/build-transition.js</span>
+<span class="c1">// ...</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'it calls transitionTo function for internal links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">MOCKApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">'route:index'</span><span class="p">);</span>
+      	<span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'page'</span><span class="p">;</span> <span class="c1">// this is the route name (not the path name)</span>
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">buildTransition</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">link</span><span class="p">);</span>
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">valid</span><span class="p">);</span>
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'window.location'</span><span class="p">));</span>
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
 <span class="p">});</span>
+<span class="c1">// ...</span>
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// tests/unit/utils/build-transition.js</span>
+<span class="c1">// ...</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'it calls error function for invalid links/routes'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">let</span> <span class="nx">link</span> <span class="o">=</span> <span class="s1">'invalid.route'</span><span class="p">;</span>
 
@@ -274,6 +308,7 @@ ember g route restaurants/restaurant <span class="c"># show menu of the restaura
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'transitionTo'</span><span class="p">));</span>
         <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">run</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'error'</span><span class="p">));</span>
 <span class="p">});</span>
+<span class="c1">// ...</span>
 </code></pre>
 </div>
 
@@ -281,7 +316,7 @@ ember g route restaurants/restaurant <span class="c"># show menu of the restaura
   <li>Run unit test for <code class="highlighter-rouge">build-transition</code> function</li>
 </ul>
 
-<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember <span class="nb">test</span>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>ember t -s -m <span class="s1">'Unit | Utility | build transition'</span>
 </code></pre>
 </div>
 

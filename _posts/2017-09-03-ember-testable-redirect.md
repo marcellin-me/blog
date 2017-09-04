@@ -95,9 +95,21 @@ export default function buildTransition(route, input) {
 // * NOTE that we are not calling run, but instead checking to see what would get executed if we call it.
 // tests/unit/utils/build-transition.js
 // ...
-const MOCKApp = Application.create();
-MOCKApp.IndexRoute = Route.extend({});
-MOCKApp.PageRoute = Route.extend({});
+let MOCKApp;
+module('Unit | Utility | build transition', {
+	before() {
+		MOCKApp = run(() => {
+			let application = Application.create();
+			application.IndexRoute = Route.extend({});
+			application.PageRoute = Route.extend({});
+			return application;
+		});
+		// END stub a route
+	},
+	after() {
+		run(MOCKApp, 'destroy');
+	}
+});
 // ...
 ```
 
