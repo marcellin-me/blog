@@ -95,6 +95,15 @@ export default function buildTransition(route, input) {
 // * NOTE that we are not calling run, but instead checking to see what would get executed if we call it.
 // tests/unit/utils/build-transition.js
 // ...
+const MOCKApp = Application.create();
+MOCKApp.IndexRoute = Route.extend({});
+MOCKApp.PageRoute = Route.extend({});
+// ...
+```
+
+```javascript
+// tests/unit/utils/build-transition.js
+// ...
 test('it calls window location function for external links', function(assert) {
         let link = 'https://example.com/menu.html';
 
@@ -103,14 +112,27 @@ test('it calls window location function for external links', function(assert) {
         assert.ok(!result.run.toString().includes('transitionTo'));
         assert.ok(result.run.toString().includes('window.location'));
 });
-test('it calls transitionTo function for internal links/routes', function(assert) {
-        let link = 'application';  
+// ...
+```
 
-        let result = buildTransition(link);
+```javascript
+// tests/unit/utils/build-transition.js
+// ...
+test('it calls transitionTo function for internal links/routes', function(assert) {
+        let index = MOCKApp.__container__.lookup('route:index');
+      	let link = 'page'; // this is the route name (not the path name)
+
+        let result = buildTransition(index, link);
         assert.ok(result.valid);
         assert.ok(!result.run.toString().includes('window.location'));
         assert.ok(result.run.toString().includes('transitionTo'));
 });
+// ...
+```
+
+```javascript
+// tests/unit/utils/build-transition.js
+// ...
 test('it calls error function for invalid links/routes', function(assert) {
         let link = 'invalid.route';
 
@@ -120,6 +142,7 @@ test('it calls error function for invalid links/routes', function(assert) {
         assert.ok(!result.run.toString().includes('transitionTo'));
         assert.ok(result.run.toString().includes('error'));
 });
+// ...
 ```
 
 * Run unit test for `build-transition` function
